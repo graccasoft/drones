@@ -5,6 +5,7 @@ import com.graccasoft.drones.enums.DroneState;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -21,6 +22,7 @@ import java.math.BigDecimal;
 @Setter
 public class Drone extends BaseEntity {
 
+    @NotNull
     @Length(min=1, max = 100)
     private String serialNumber;
 

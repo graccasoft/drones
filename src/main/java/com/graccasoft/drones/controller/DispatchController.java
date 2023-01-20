@@ -4,6 +4,7 @@ import com.graccasoft.drones.dto.BatteryLevelResponse;
 import com.graccasoft.drones.dto.StandardResponse;
 import com.graccasoft.drones.entity.Drone;
 import com.graccasoft.drones.entity.Medication;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,17 +17,17 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/api/v1/dispatch")
-public class Dispatch {
+public class DispatchController {
 
     //register drone endpoint
 
     @PostMapping("register")
-    public Drone registerDrone(Drone drone){
+    public Drone registerDrone(@Valid @RequestBody Drone drone){
         return null;
     }
 
     @PostMapping("load/{droneId}")
-    public StandardResponse loadDrone(@RequestBody List<Medication> medicationItems, @PathVariable Integer droneId){
+    public StandardResponse loadDrone(@Valid @RequestBody List<Medication> medicationItems, @PathVariable Integer droneId){
         return new StandardResponse(200,"Drone loaded");
     }
 
