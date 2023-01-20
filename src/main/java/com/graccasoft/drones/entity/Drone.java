@@ -38,10 +38,11 @@ public class Drone extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private DroneState state;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="drone_medication",
             joinColumns = @JoinColumn(name = "drone_id"),
             inverseJoinColumns = @JoinColumn(name="medication_id"))
+
     private List<Medication> loadedMedication = new ArrayList<>();
 }
