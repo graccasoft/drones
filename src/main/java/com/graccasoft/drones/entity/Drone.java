@@ -10,6 +10,7 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -42,5 +43,5 @@ public class Drone extends BaseEntity {
             name="drone_medication",
             joinColumns = @JoinColumn(name = "drone_id"),
             inverseJoinColumns = @JoinColumn(name="medication_id"))
-    private List<Medication> loadedMedication;
+    private List<Medication> loadedMedication = new ArrayList<>();
 }
