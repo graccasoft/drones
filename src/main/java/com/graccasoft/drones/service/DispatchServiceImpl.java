@@ -67,6 +67,8 @@ public class DispatchServiceImpl implements DispatchService {
             throw new DroneCanNotBeLoadedException("The weight of provided medication is over the limit for this drone");
         }
 
+        //update status of drone
+        drone.setState(DroneState.LOADING);
         droneRepository.save(drone);
 
 
