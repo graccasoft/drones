@@ -4,7 +4,7 @@ import com.graccasoft.drones.entity.Drone;
 import com.graccasoft.drones.entity.Medication;
 import com.graccasoft.drones.enums.DroneModel;
 import com.graccasoft.drones.enums.DroneState;
-import com.graccasoft.drones.exception.DroneReachedWeightLimitException;
+import com.graccasoft.drones.exception.DroneCanNotBeLoadedException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +36,12 @@ class DispatchServiceImplTest {
     }
 
     @Test
-    void shouldNotSaveDroneIfLoadIsHeavier(){
+    void shouldNotLoadDroneIfLoadIsHeavier(){
         Drone drone = new Drone();
         drone.setState(DroneState.IDLE);
         drone.setSerialNumber("01929232");
         drone.setModel(DroneModel.CRUISERWEIGHT);
+        drone.setPercentage(new BigDecimal(60));
         drone.setWeightLimit(new BigDecimal(500));
 
         Integer droneId = dispatchService.saveDrone(drone).getId();
@@ -59,18 +60,42 @@ class DispatchServiceImplTest {
         medicationList.add(medication1);
         medicationList.add(medication2);
 
-        DroneReachedWeightLimitException thrown = Assertions.assertThrows(DroneReachedWeightLimitException.class, () -> {
+        DroneCanNotBeLoadedException thrown = Assertions.assertThrows(DroneCanNotBeLoadedException.class, () -> {
             dispatchService.loadDrone(droneId,medicationList);
-        }, "DroneReachedWeightLimitException was expected");
+        }, "DroneCanNotBeLoadedException was expected");
 
     }
 
+    @Test
+    void shouldNotLoadDroneIPercentageIsLessThan25(){
+        Drone drone = new Drone();
+        drone.setState(DroneState.IDLE);
+        drone.setSerialNumber("01929232");
+        drone.setModel(DroneModel.CRUISERWEIGHT);
+        drone.setPercentage(new BigDecimal(24));
+        drone.setWeightLimit(new BigDecimal(500));
+
+        Integer droneId = dispatchService.saveDrone(drone).getId();
+
+        Medication medication1 = new Medication();
+        medication1.setName("med1");
+        medication1.setWeight(new BigDecimal(300));
+        medication1.setCode("med1");
+
+        List<Medication> medicationList = new ArrayList<>();
+        medicationList.add(medication1);
+        DroneCanNotBeLoadedException thrown = Assertions.assertThrows(DroneCanNotBeLoadedException.class, () -> {
+            dispatchService.loadDrone(droneId,medicationList);
+        }, "DroneCanNotBeLoadedException was expected");
+
+    }
     @Test
     void shouldLoadMedicationIfWeightIsInLimit(){
         Drone drone = new Drone();
         drone.setState(DroneState.IDLE);
         drone.setSerialNumber("01929232");
         drone.setModel(DroneModel.CRUISERWEIGHT);
+        drone.setPercentage(new BigDecimal(75));
         drone.setWeightLimit(new BigDecimal(500));
 
         Integer droneId = dispatchService.saveDrone(drone).getId();
@@ -93,4 +118,5 @@ class DispatchServiceImplTest {
 
         Assertions.assertEquals(2, dispatchService.getDroneMedicationList(droneId).size());
     }
+
 }

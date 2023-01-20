@@ -5,7 +5,7 @@ import com.graccasoft.drones.entity.Drone;
 import com.graccasoft.drones.entity.Medication;
 import com.graccasoft.drones.enums.DroneState;
 import com.graccasoft.drones.exception.DroneNotFoundException;
-import com.graccasoft.drones.exception.DroneReachedWeightLimitException;
+import com.graccasoft.drones.exception.DroneCanNotBeLoadedException;
 import com.graccasoft.drones.repository.DroneRepository;
 import com.graccasoft.drones.repository.MedicationRepository;
 import org.springframework.stereotype.Service;
@@ -41,7 +41,16 @@ public class DispatchServiceImpl implements DispatchService {
         if(!droneRepository.existsById(droneId) ){
             throw new DroneNotFoundException("Drone with provided id could not be found");
         }
+
         Drone drone = droneRepository.getReferenceById(droneId);
+
+        //% should be greater than 25 %
+        if( drone.getPercentage() == null || drone.getPercentage().compareTo(new BigDecimal(25)) < 0 ){
+            throw new DroneCanNotBeLoadedException("Drone can not be loaded, battery is below 25%");
+        }
+        if( !drone.getState().equals(DroneState.IDLE) ){
+            throw new DroneCanNotBeLoadedException("Drone can not be loaded, it is not IDLE");
+        }
         medicationItems.forEach(medication -> {
             drone.getLoadedMedication().add( medicationRepository.save(medication) );
         });
@@ -55,7 +64,7 @@ public class DispatchServiceImpl implements DispatchService {
         }
         //throw exception if weight exceeds the linit
         if( totalLoadedWeight.compareTo(drone.getWeightLimit()) == 1 ){
-            throw new DroneReachedWeightLimitException("The weight of provided medication is over the limit for this drone");
+            throw new DroneCanNotBeLoadedException("The weight of provided medication is over the limit for this drone");
         }
 
         droneRepository.save(drone);

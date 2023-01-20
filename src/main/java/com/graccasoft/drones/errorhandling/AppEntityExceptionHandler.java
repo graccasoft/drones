@@ -1,7 +1,7 @@
 package com.graccasoft.drones.errorhandling;
 
 import com.graccasoft.drones.exception.DroneNotFoundException;
-import com.graccasoft.drones.exception.DroneReachedWeightLimitException;
+import com.graccasoft.drones.exception.DroneCanNotBeLoadedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -35,7 +35,7 @@ public class AppEntityExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler({DroneReachedWeightLimitException.class})
+    @ExceptionHandler({DroneCanNotBeLoadedException.class})
     public final ResponseEntity<ErrorDetails> handleDroneReachedWeightLimitException(Exception ex, WebRequest webRequest){
         ErrorDetails errorDetails = new ErrorDetails(LocalDate.now(),
                 ex.getMessage(),
