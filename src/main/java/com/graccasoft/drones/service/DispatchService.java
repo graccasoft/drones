@@ -1,6 +1,7 @@
 package com.graccasoft.drones.service;
 
 import com.graccasoft.drones.dto.BatteryLevelResponse;
+import com.graccasoft.drones.dto.RegisterDroneRequest;
 import com.graccasoft.drones.entity.Drone;
 import com.graccasoft.drones.entity.Medication;
 
@@ -11,7 +12,7 @@ import java.util.List;
  * @created 20/01/2023 - 4:33 pm
  */
 public interface DispatchService {
-    Drone saveDrone(Drone drone);
+    Drone saveDrone(RegisterDroneRequest drone);
     void loadDrone(Integer droneId, List<Medication> medicationItems);
     List<Medication> getDroneMedicationList(Integer droneId);
     List<Drone> getAvailableDrones();

@@ -1,6 +1,7 @@
 package com.graccasoft.drones.service;
 
 import com.graccasoft.drones.dto.BatteryLevelResponse;
+import com.graccasoft.drones.dto.RegisterDroneRequest;
 import com.graccasoft.drones.entity.Drone;
 import com.graccasoft.drones.entity.Medication;
 import com.graccasoft.drones.enums.DroneState;
@@ -31,7 +32,13 @@ public class DispatchServiceImpl implements DispatchService {
 
     @Override
     @Transactional
-    public Drone saveDrone(Drone drone) {
+    public Drone saveDrone(RegisterDroneRequest droneRequest) {
+        Drone drone = new Drone();
+        drone.setPercentage(droneRequest.getPercentage());
+        drone.setWeightLimit(droneRequest.getWeightLimit());
+        drone.setModel(droneRequest.getModel());
+        drone.setSerialNumber(droneRequest.getSerialNumber());
+        drone.setState(droneRequest.getState());
         return droneRepository.save(drone);
     }
 

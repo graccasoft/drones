@@ -1,5 +1,6 @@
 package com.graccasoft.drones.service;
 
+import com.graccasoft.drones.dto.RegisterDroneRequest;
 import com.graccasoft.drones.entity.Drone;
 import com.graccasoft.drones.entity.Medication;
 import com.graccasoft.drones.enums.DroneModel;
@@ -26,7 +27,7 @@ class DispatchServiceImplTest {
 
     @Test
     void shouldSaveDroneWhenValid(){
-        Drone drone = new Drone();
+        RegisterDroneRequest drone = new RegisterDroneRequest();
         drone.setState(DroneState.IDLE);
         drone.setSerialNumber("01929232");
         drone.setModel(DroneModel.CRUISERWEIGHT);
@@ -37,7 +38,7 @@ class DispatchServiceImplTest {
 
     @Test
     void shouldNotLoadDroneIfLoadIsHeavier(){
-        Drone drone = new Drone();
+        RegisterDroneRequest drone = new RegisterDroneRequest();
         drone.setState(DroneState.IDLE);
         drone.setSerialNumber("01929232");
         drone.setModel(DroneModel.CRUISERWEIGHT);
@@ -68,7 +69,7 @@ class DispatchServiceImplTest {
 
     @Test
     void shouldNotLoadDroneIPercentageIsLessThan25(){
-        Drone drone = new Drone();
+        RegisterDroneRequest drone = new RegisterDroneRequest();
         drone.setState(DroneState.IDLE);
         drone.setSerialNumber("01929232");
         drone.setModel(DroneModel.CRUISERWEIGHT);
@@ -91,7 +92,7 @@ class DispatchServiceImplTest {
     }
     @Test
     void shouldLoadMedicationIfWeightIsInLimit(){
-        Drone drone = new Drone();
+        RegisterDroneRequest drone = new RegisterDroneRequest();
         drone.setState(DroneState.IDLE);
         drone.setSerialNumber("01929232");
         drone.setModel(DroneModel.CRUISERWEIGHT);
